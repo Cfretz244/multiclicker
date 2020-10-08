@@ -14,14 +14,26 @@ end
 
 #----- Setup -----#
 
+KEYS = {
+  'up' => 126,
+  'right' => 124,
+  'down' => 125,
+  'left' => 123
+}
+
 # Get redis handle
-redis = Redis.new(host: opts[:redis_host], port: opts[:redis_port], password: opt[:redis_pass])
+redis = Redis.new(host: opts[:redis_host], port: opts[:redis_port], password: opts[:redis_pass])
 
 #----- Application Logic -----#
 
 redis.subscribe('multiclicker') do |on|
   on.message do |_, msg|
+    # Parse it
     cmd = JSON.parse(msg)
-    puts "Performing #{cmd['key']} click"
+    raise 'Unregistered command received' unless KEYS.has_key?(cmd['key'])
+
+    # Press it
+    puts "Pressing key #{cmd['key']}..."
+    `osascript -e 'tell application "System Events" to key code #{KEYS[cmd['key']]}'`
   end
 end
