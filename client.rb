@@ -15,6 +15,7 @@ end
 #----- Setup -----#
 
 KEYS = {
+  'space' => 49,
   'up' => 126,
   'right' => 124,
   'down' => 125,

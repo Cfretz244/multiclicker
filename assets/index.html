@@ -35,6 +35,9 @@
       });
       $(document).keydown(function (e) {
         switch (e.which) {
+          case 32:
+            $.post('/action', {key: 'space'});
+            break;
           case 37:
             // Left arrow key
             $.post('/action', {key: 'left'});
